@@ -1,0 +1,3 @@
+[submodule "pyac"]
+	path = pyac
+	url = https://github.com/kostajh/pyac.git

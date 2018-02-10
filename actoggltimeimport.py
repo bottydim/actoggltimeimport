@@ -9,10 +9,10 @@ import argparse
 import re
 import requests
 import os.path
-import ConfigParser
+import configparser
 
 parser = argparse.ArgumentParser(description="Sends Toggl time entries to Active Collab as long as the project slug (the name of the project as rendered in its URL) matches a project in Active Collab. If the task begins with #N (where N is the task number within that project), the time will be attached to that specific task.")
-parser.add_argument("-d", "--days", dest="days", default=15, type=int, choices=xrange(1,364),
+parser.add_argument("-d", "--days", dest="days", default=15, type=int, choices=range(1,364),
                     help="how many days of time entries to pull; remember, already-synced entries will be skipped automatically. Default value is 15.", metavar="N")
 args = parser.parse_args()
 
@@ -26,7 +26,7 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(formatter)
 LOG.addHandler(ch)
 
-config = ConfigParser.RawConfigParser()
+config = configparser.RawConfigParser()
 try:
     config.read(os.path.expanduser('~/.togglrc'))
     toggl_api_token = config.get('toggl', 'token')
@@ -74,7 +74,7 @@ def query_yes_no(question, default="yes"):
 
     while True:
         sys.stdout.write(question + prompt)
-        choice = raw_input().lower()
+        choice = input().lower()
         if default is not None and choice == '':
             return valid[default]
         elif choice in valid:
@@ -222,7 +222,7 @@ project_list = []
 for project in projects:
     project_list.append(project["slug"])
 
-for entry, props in new_items.iteritems():
+for entry, props in new_items.items():
     #props values are 0:project, 1:description, 2:end date, 3:duration
     if props[0] in project_list:
         task_num_text = re.match('^#(\d+)(.*)', props[1])
